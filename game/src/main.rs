@@ -8,9 +8,9 @@ mod player;
 
 use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
-use physics::{apply_gravity};
+use physics::{apply_gravity, player_platform_collision};
 use platform::setup_platforms;
-use player::{apply_velocity, player_movement, spawn_player};
+use player::{apply_velocity, spawn_player, player_movement};
 
 fn main() {
     App::new()
@@ -30,8 +30,9 @@ fn main() {
                 player_movement,
                 apply_gravity,
                 apply_velocity,
+                player_platform_collision,
                 camera_follow_player,
-            ),
+            ).chain(),
         )
         .run();
 }

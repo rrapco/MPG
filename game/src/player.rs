@@ -1,3 +1,4 @@
+
 use bevy::prelude::*;
 
 use crate::constants::{JUMP_FORCE, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_WIDTH};
@@ -23,14 +24,16 @@ pub fn spawn_player(mut commands: Commands) {
         Transform::from_xyz(0.0, -200.0, 1.0),
         Player,
         Velocity::default(),
+        OnGround(false),
     ));
 }
 
 pub fn player_movement(
+    time: Res<Time>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    player: Single<(&mut Velocity), With<Player>>,
+    player: Single<(&mut Velocity, &mut OnGround, &mut Transform), With<Player>>,
 ) {
-    let (mut velocity) = player.into_inner();
+    let (mut velocity, mut on_ground, mut transform) = player.into_inner();
 
     velocity.x = 0.0;
 
@@ -42,10 +45,19 @@ pub fn player_movement(
         velocity.x += PLAYER_SPEED;
     }
 
-    if keyboard_input.just_pressed(KeyCode::Space) {
-        println!("space was pressed");
-        //velocity.y = JUMP_FORCE;
-        //on_ground.0 = false;
+    if keyboard_input.just_pressed(KeyCode::Space) && on_ground.0 {
+        println!("Time: {:?} space kliknuty a elapsed {:?}",
+                 time.delta(),
+                 time.elapsed());
+        velocity.y = JUMP_FORCE;
+        on_ground.0 = false;
+    }
+
+    if keyboard_input.pressed(KeyCode::KeyR) {
+        transform.translation.x = 0.0;
+        transform.translation.y = -200.0;
+        transform.translation.y = 1.0;
+        on_ground.0 = true;
     }
 }
 
