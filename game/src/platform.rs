@@ -32,4 +32,9 @@ pub fn setup_platforms(mut commands: Commands) {
     spawn_platform(&mut commands, 200.0, -150.0, 160.0, 20.0);
     spawn_platform(&mut commands, -100.0, 0.0, 160.0, 20.0);
     spawn_platform(&mut commands, 100.0, 150.0, 140.0, 20.0);
+    spawn_platform(&mut commands, 100.0, 350.0, 140.0, 20.0);
+    spawn_platform(&mut commands, 100.0, 500.0, 140.0, 20.0);
+    spawn_platform(&mut commands, 100.0, 650.0, 140.0, 20.0);
+    spawn_platform(&mut commands, 100.0, 800.0, 140.0, 20.0);
+    spawn_platform(&mut commands, 100.0, 950.0, 140.0, 20.0);
 }

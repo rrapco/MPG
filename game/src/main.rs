@@ -5,9 +5,11 @@ mod constants;
 mod physics;
 mod platform;
 mod player;
+mod background;
 
 use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
+use background::setup_background;
 use physics::{apply_gravity, player_platform_collision};
 use platform::setup_platforms;
 use player::{apply_velocity, spawn_player, player_movement};
@@ -23,7 +25,7 @@ fn main() {
             }),
             ..default()
         }))
-        .add_systems(Startup, (setup_camera, setup_platforms, spawn_player))
+        .add_systems(Startup, (setup_background, setup_camera, setup_platforms, spawn_player))
         .add_systems(
             Update,
             (
@@ -32,7 +34,8 @@ fn main() {
                 apply_velocity,
                 player_platform_collision,
                 camera_follow_player,
-            ).chain(),
+            )
+                .chain(),
         )
         .run();
 }
