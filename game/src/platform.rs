@@ -1,13 +1,8 @@
 use bevy::prelude::*;
+use avian2d::prelude::*;
 
 #[derive(Component)]
 pub struct Platform;
-
-#[derive(Component)]
-pub struct PlatformSize {
-    pub width: f32,
-    pub height: f32,
-}
 
 pub fn spawn_platform(
     commands: &mut Commands,
@@ -23,7 +18,8 @@ pub fn spawn_platform(
         ),
         Transform::from_xyz(x, y, 0.0),
         Platform,
-        PlatformSize { width, height },
+        RigidBody::Static,
+        Collider::rectangle(width, height),
     ));
 }
 
