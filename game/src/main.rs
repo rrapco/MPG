@@ -4,14 +4,14 @@ use bevy::window::WindowResolution;
 
 mod camera;
 mod constants;
-mod platform;
 mod player;
 mod background;
+mod map;
 
+use map::load_map;
 use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
 use background::setup_background;
-use platform::setup_platforms;
 use player::{spawn_player, player_movement};
 
 fn main() {
@@ -27,7 +27,7 @@ fn main() {
         }))
         .add_plugins(PhysicsPlugins::default())
         .insert_resource(Gravity(Vec2::NEG_Y * 900.0))
-        .add_systems(Startup, (setup_background, setup_camera, setup_platforms, spawn_player))
+        .add_systems(Startup, (load_map, setup_background, setup_camera, spawn_player).chain())
         .add_systems(
             Update,
             (player_movement, camera_follow_player).chain(),
