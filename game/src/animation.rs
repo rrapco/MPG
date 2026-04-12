@@ -1,7 +1,8 @@
 use bevy::prelude::*;
 use std::time::Duration;
-use crate::player::Player;
 use avian2d::prelude::LinearVelocity;
+use crate::player::Player;
+use crate::texture::GameTextures;
 
 // https://bevy.org/examples/2d-rendering/sprite-animation/
 
@@ -45,26 +46,6 @@ impl AnimationConfig {
     }
 }
 
-pub fn load_player_textures(
-    mut commands: Commands,
-    asset_server: Res<AssetServer>,
-    mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
-) {
-    let idle_layout = texture_atlas_layouts.add(
-        TextureAtlasLayout::from_grid(UVec2::new(80, 64), 7, 1, None, None)
-    );
-    let run_layout = texture_atlas_layouts.add(
-        TextureAtlasLayout::from_grid(UVec2::new(80, 64), 8, 1, None, None)
-    );
-
-    commands.insert_resource(PlayerTextures {
-        idle: asset_server.load("sprites/player/Mushroom-Idle.png"),
-        run: asset_server.load("sprites/player/Mushroom-Run.png"),
-        idle_layout,
-        run_layout,
-    });
-}
-
 pub fn execute_animations(
     time: Res<Time>,
     mut query: Query<(&mut AnimationConfig, &mut Sprite)>,
@@ -90,7 +71,7 @@ pub fn update_player_animation(
     (&LinearVelocity, &mut PlayerAnimation, &mut Sprite, &mut AnimationConfig),
     With<Player>,
     >,
-    textures: Res<PlayerTextures>,
+    textures: Res<GameTextures>,
 ) {
     let Ok((velocity, mut current_anim, mut sprite, mut config)) = query.single_mut() else {
         return;
@@ -116,17 +97,17 @@ pub fn update_player_animation(
 
     match new_anim {
         PlayerAnimation::Idle => {
-            sprite.image = textures.idle.clone();
+            sprite.image = textures.player_idle.clone();
             sprite.texture_atlas = Some(TextureAtlas {
-                layout: textures.idle_layout.clone(),
+                layout: textures.player_idle_layout.clone(),
                 index: 0,
             });
             *config = AnimationConfig::new(0, 6, 8);
         }
         PlayerAnimation::Run => {
-            sprite.image = textures.run.clone();
+            sprite.image = textures.player_run.clone();
             sprite.texture_atlas = Some(TextureAtlas {
-                layout: textures.run_layout.clone(),
+                layout: textures.player_run_layout.clone(),
                 index: 0,
             });
             *config = AnimationConfig::new(0, 7, 10);

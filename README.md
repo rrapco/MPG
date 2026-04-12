@@ -6,7 +6,7 @@ TODO:
 - Avian 2D physics +
 - UI pisanie vysky
 - Game Menu
-- Player Sprite
+- Player Sprite + ale nesedi vyska
 - Background rovnaky/podobny z jump king
 - Platform sprite # /‾\ # upperscore
 - Types of enemies = (standing, moving, shooting)

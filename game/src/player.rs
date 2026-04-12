@@ -5,6 +5,7 @@ use avian2d::prelude::*;
 use crate::constants::{JUMP_FORCE, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_WIDTH, PLAYER_SPRITE_Y_OFFSET};
 use crate::map::PlayerSpawnPoint;
 use crate::animation::{AnimationConfig, PlayerAnimation};
+use crate::texture::GameTextures;
 
 #[derive(Component)]
 pub struct Player;
@@ -12,13 +13,13 @@ pub struct Player;
 pub fn spawn_player(
     mut commands: Commands,
     spawn_point: Res<PlayerSpawnPoint>,
-    textures: Res<crate::animation::PlayerTextures>,
+    textures: Res<GameTextures>,
 ) {
     commands.spawn((
         Sprite {
-            image: textures.idle.clone(),
+            image: textures.player_idle.clone(),
             texture_atlas: Some(TextureAtlas {
-                layout: textures.idle_layout.clone(),
+                layout: textures.player_idle_layout.clone(),
                 index: 0,
             }),
             ..default()
