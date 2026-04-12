@@ -12,31 +12,18 @@ pub struct Player;
 pub fn spawn_player(
     mut commands: Commands,
     spawn_point: Res<PlayerSpawnPoint>,
-    asset_server: Res<AssetServer>,
-    mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
+    textures: Res<crate::animation::PlayerTextures>,
 ) {
-    let texture = asset_server.load("sprites/player/Mushroom-Idle.png");
-
-    let layout = TextureAtlasLayout::from_grid(
-        UVec2::new(80, 64),
-        7,
-        1,
-        None,
-        None,
-    );
-    let layout_handle = texture_atlas_layouts.add(layout);
-
     commands.spawn((
         Sprite {
-            image: texture,
+            image: textures.idle.clone(),
             texture_atlas: Some(TextureAtlas {
-                layout: layout_handle,
+                layout: textures.idle_layout.clone(),
                 index: 0,
             }),
             ..default()
         },
-        Transform::from_xyz(spawn_point.0.x, spawn_point.0.y, 1.0)
-            .with_scale(Vec3::splat(1.0)),
+        Transform::from_xyz(spawn_point.0.x, spawn_point.0.y, 1.0),
         Player,
         RigidBody::Dynamic,
         Collider::rectangle(PLAYER_WIDTH, PLAYER_HEIGHT),
@@ -89,11 +76,5 @@ pub fn player_movement(
         transform.translation.z = 1.0;
         velocity.x = 0.0;
         velocity.y = 0.0;
-    }
-
-    if velocity.x < 0.0 {
-        sprite.flip_x = false;
-    } else if velocity.x > 0.0 {
-        sprite.flip_x = true;
     }
 }

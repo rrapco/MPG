@@ -11,6 +11,14 @@ pub enum PlayerAnimation {
     Run,
 }
 
+#[derive(Resource)]
+pub struct PlayerTextures {
+    pub idle: Handle<Image>,
+    pub run: Handle<Image>,
+    pub idle_layout: Handle<TextureAtlasLayout>,
+    pub run_layout: Handle<TextureAtlasLayout>,
+}
+
 #[derive(Component)]
 pub struct AnimationConfig {
     pub first_sprite_index: usize,
@@ -37,6 +45,26 @@ impl AnimationConfig {
     }
 }
 
+pub fn load_player_textures(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let idle_layout = texture_atlas_layouts.add(
+        TextureAtlasLayout::from_grid(UVec2::new(80, 64), 7, 1, None, None)
+    );
+    let run_layout = texture_atlas_layouts.add(
+        TextureAtlasLayout::from_grid(UVec2::new(80, 64), 8, 1, None, None)
+    );
+
+    commands.insert_resource(PlayerTextures {
+        idle: asset_server.load("sprites/player/Mushroom-Idle.png"),
+        run: asset_server.load("sprites/player/Mushroom-Run.png"),
+        idle_layout,
+        run_layout,
+    });
+}
+
 pub fn execute_animations(
     time: Res<Time>,
     mut query: Query<(&mut AnimationConfig, &mut Sprite)>,
@@ -58,13 +86,21 @@ pub fn execute_animations(
 }
 
 pub fn update_player_animation(
-    mut query: Query<(&LinearVelocity, &mut PlayerAnimation, &mut Sprite, &mut AnimationConfig),With<Player>, >,
-    asset_server: Res<AssetServer>,
-    mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
+    mut query: Query<
+    (&LinearVelocity, &mut PlayerAnimation, &mut Sprite, &mut AnimationConfig),
+    With<Player>,
+    >,
+    textures: Res<PlayerTextures>,
 ) {
     let Ok((velocity, mut current_anim, mut sprite, mut config)) = query.single_mut() else {
         return;
     };
+
+    if velocity.x < -0.1 {
+        sprite.flip_x = false;
+    } else if velocity.x > 0.1 {
+        sprite.flip_x = true;
+    }
 
     let new_anim = if velocity.x.abs() > 0.1 {
         PlayerAnimation::Run
@@ -78,25 +114,22 @@ pub fn update_player_animation(
 
     *current_anim = new_anim.clone();
 
-    let (path, frames, first, last, fps) = match new_anim {
-        PlayerAnimation::Idle => ("sprites/player/Mushroom-Idle.png", 7, 0, 6, 8),
-        PlayerAnimation::Run  => ("sprites/player/Mushroom-Run.png", 8, 0, 7, 10),
-    };
-
-    let layout = TextureAtlasLayout::from_grid(
-        UVec2::new(80, 64),
-        frames,
-        1,
-        None,
-        None,
-    );
-    let layout_handle = texture_atlas_layouts.add(layout);
-
-    sprite.image = asset_server.load(path);
-    sprite.texture_atlas = Some(TextureAtlas {
-        layout: layout_handle,
-        index: first,
-    });
-
-    *config = AnimationConfig::new(first, last, fps);
+    match new_anim {
+        PlayerAnimation::Idle => {
+            sprite.image = textures.idle.clone();
+            sprite.texture_atlas = Some(TextureAtlas {
+                layout: textures.idle_layout.clone(),
+                index: 0,
+            });
+            *config = AnimationConfig::new(0, 6, 8);
+        }
+        PlayerAnimation::Run => {
+            sprite.image = textures.run.clone();
+            sprite.texture_atlas = Some(TextureAtlas {
+                layout: textures.run_layout.clone(),
+                index: 0,
+            });
+            *config = AnimationConfig::new(0, 7, 10);
+        }
+    }
 }
