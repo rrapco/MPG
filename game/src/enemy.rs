@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use avian2d::prelude::*;
+use crate::constants::*;
 
 pub const ENEMY_WIDTH: f32 = 20.0;
 pub const ENEMY_HEIGHT: f32 = 30.0;
@@ -51,7 +52,7 @@ pub fn spawn_enemy(commands: &mut Commands, x: f32, y: f32, enemy_type: EnemyTyp
             entity.insert(WalkingState {
                 direction: 1.0,
                 distance_moved: 0.0,
-                max_distance: 180.0,
+                max_distance: (TILE_SIZE_X * 4.0),
             });
         }
         EnemyType::Jumping => {
@@ -79,7 +80,7 @@ pub fn update_enemies(
             }
             EnemyType::Walking => {
                 if let Some(mut state) = walking {
-                    let speed = 30.0;
+                    let speed = 60.0;
                     velocity.x = state.direction * speed;
                     state.distance_moved += speed * time.delta_secs();
 
