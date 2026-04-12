@@ -4,4 +4,3 @@ pub const PLAYER_WIDTH: f32 = 15.0;
 pub const PLAYER_HEIGHT: f32 = 15.0;
 pub const PLAYER_SPEED: f32 = 400.0;
 pub const JUMP_FORCE: f32 = 650.0;
-pub const PLAYER_SPRITE_Y_OFFSET: f32 = 15.0;

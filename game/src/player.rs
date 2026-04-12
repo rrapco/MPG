@@ -1,8 +1,7 @@
 use bevy::prelude::*;
-use bevy::sprite::Anchor;
 use avian2d::prelude::*;
 
-use crate::constants::{JUMP_FORCE, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_WIDTH, PLAYER_SPRITE_Y_OFFSET};
+use crate::constants::{JUMP_FORCE, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_WIDTH};
 use crate::map::PlayerSpawnPoint;
 use crate::animation::{AnimationConfig, PlayerAnimation};
 use crate::texture::GameTextures;
@@ -39,11 +38,11 @@ pub fn spawn_player(
 
 pub fn player_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<(Entity, &mut LinearVelocity, &mut Transform, &mut Sprite), With<Player>>,
+    mut query: Query<(Entity, &mut LinearVelocity, &mut Transform), With<Player>>,
     spatial_query: SpatialQuery,
     spawn_point: Res<PlayerSpawnPoint>,
 ) {
-    let Ok((player_entity, mut velocity, mut transform, mut sprite)) = query.single_mut() else {
+    let Ok((player_entity, mut velocity, mut transform)) = query.single_mut() else {
         return;
     };
 
