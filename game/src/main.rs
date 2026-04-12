@@ -9,6 +9,7 @@ mod map;
 mod animation;
 mod texture;
 mod ui;
+mod enemy;
 
 use texture::{load_textures, setup_background};
 use map::load_map;
@@ -17,6 +18,7 @@ use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
 use player::{spawn_player, player_movement};
 use animation::{execute_animations, update_player_animation};
 use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
+use enemy::update_enemies;
 
 fn main() {
     App::new()
@@ -30,7 +32,7 @@ fn main() {
             ..default()
         }))
         .add_plugins(PhysicsPlugins::default())
-        .add_plugins(PhysicsDebugPlugin::default())
+        //.add_plugins(PhysicsDebugPlugin::default())
         .insert_resource(Gravity(Vec2::NEG_Y * 900.0))
         .add_message::<HeightChanged>()
         .add_systems(Startup, (load_textures, setup_background, load_map, setup_camera, spawn_player, setup_ui).chain())
@@ -41,6 +43,7 @@ fn main() {
              execute_animations,
              detect_height_change,
              update_height_ui,
+             update_enemies,
              camera_follow_player).chain(),
         )
         .run();
