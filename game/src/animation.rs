@@ -12,13 +12,6 @@ pub enum PlayerAnimation {
     Run,
 }
 
-#[derive(Resource)]
-pub struct PlayerTextures {
-    pub idle: Handle<Image>,
-    pub run: Handle<Image>,
-    pub idle_layout: Handle<TextureAtlasLayout>,
-    pub run_layout: Handle<TextureAtlasLayout>,
-}
 
 #[derive(Component)]
 pub struct AnimationConfig {

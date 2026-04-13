@@ -7,9 +7,6 @@ use crate::constants::{TILE_SIZE_X, TILE_SIZE_Y};
 pub const ROW_GAP: f32 = 50.0;
 
 #[derive(Component)]
-pub struct Wall;
-
-#[derive(Component)]
 pub struct Slope;
 
 #[derive(Resource)]
@@ -40,9 +37,9 @@ pub fn load_map(mut commands: Commands) {
             let y = (map_height - 1 - row) as f32 * (TILE_SIZE_Y + ROW_GAP) + TILE_SIZE_Y / 2.0;
 
             match ch {
-                '‾' => {
+                '_' => {
                     let start_col = col;
-                    while col < chars.len() && chars[col] == '‾' {
+                    while col < chars.len() && chars[col] == '_' {
                         col += 1;
                     }
                     let count = col - start_col;
@@ -53,7 +50,6 @@ pub fn load_map(mut commands: Commands) {
                         cx, y,
                         width, TILE_SIZE_Y, // výška platformy
                         Color::srgb(0.2, 0.8, 0.3),
-                        false,
                     );
                     continue;
                 }
@@ -90,18 +86,13 @@ fn spawn_tile(
     x: f32, y: f32,
     width: f32, height: f32,
     color: Color,
-    is_wall: bool,
 ) {
-    let mut entity = commands.spawn((
+    commands.spawn((
         Sprite::from_color(color, Vec2::new(width, height)),
         Transform::from_xyz(x, y, 0.0),
         RigidBody::Static,
         Collider::rectangle(width, height),
     ));
-
-    if is_wall {
-        entity.insert(Wall);
-    }
 }
 
 fn spawn_slope(

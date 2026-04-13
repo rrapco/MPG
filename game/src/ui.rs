@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 use crate::player::Player;
-use crate::map::PlayerSpawnPoint;
 
 #[derive(Message, Clone)]
 pub struct HeightChanged(pub f32);
@@ -28,7 +27,6 @@ pub fn setup_ui(mut commands: Commands) {
 
 pub fn detect_height_change(
     player_query: Query<&Transform, With<Player>>,
-    spawn_point: Res<PlayerSpawnPoint>,
     mut last_height: Local<f32>,
     mut writer: MessageWriter<HeightChanged>,
 ) {
