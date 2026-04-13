@@ -48,7 +48,7 @@ pub fn load_map(mut commands: Commands) {
                     spawn_tile(
                         &mut commands,
                         cx, y,
-                        width, TILE_SIZE_Y, // výška platformy
+                        width, TILE_SIZE_Y,
                         Color::srgb(0.2, 0.8, 0.3),
                     );
                     continue;
@@ -92,6 +92,26 @@ fn spawn_tile(
         Transform::from_xyz(x, y, 0.0),
         RigidBody::Static,
         Collider::rectangle(width, height),
+    ));
+}
+
+fn spawn_tile1(
+    commands: &mut Commands,
+    x: f32, y: f32,
+    width: f32, height: f32,
+    color: Color,
+) {
+    let half_w = width / 2.0;
+    let half_h = height / 2.0;
+
+    commands.spawn((
+        Sprite::from_color(color, Vec2::new(width, height)),
+        Transform::from_xyz(x, y, 0.0),
+        RigidBody::Static,
+        Collider::segment(
+            Vec2::new(-half_w, half_h),
+            Vec2::new(half_w, half_h)
+        ),
     ));
 }
 

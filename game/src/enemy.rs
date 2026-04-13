@@ -41,7 +41,11 @@ pub fn spawn_enemy(commands: &mut Commands, x: f32, y: f32, enemy_type: EnemyTyp
         RigidBody::Dynamic,
         Collider::rectangle(ENEMY_WIDTH, ENEMY_HEIGHT),
         LinearVelocity::ZERO,
-        LockedAxes::ROTATION_LOCKED,
+        //Mass(100000.0),
+        //LockedAxes::ROTATION_LOCKED,
+        LockedAxes::new()
+            .lock_rotation()
+            .lock_translation_x(),
         Friction::ZERO,
         Restitution::ZERO,
         enemy_type.clone(),

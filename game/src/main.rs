@@ -32,7 +32,7 @@ fn main() {
             ..default()
         }))
         .add_plugins(PhysicsPlugins::default())
-        //.add_plugins(PhysicsDebugPlugin::default())
+        .add_plugins(PhysicsDebugPlugin::default())
         .insert_resource(Gravity(Vec2::NEG_Y * 900.0))
         .add_message::<HeightChanged>()
         .add_systems(Startup, (load_textures, setup_background, load_map, setup_camera, spawn_player, setup_ui).chain())
