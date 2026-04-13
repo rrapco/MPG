@@ -12,7 +12,6 @@ pub enum PlayerAnimation {
     Run,
 }
 
-
 #[derive(Component)]
 pub struct AnimationConfig {
     pub first_sprite_index: usize,
