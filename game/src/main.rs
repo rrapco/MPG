@@ -2,23 +2,27 @@ use bevy::prelude::*;
 use avian2d::prelude::*;
 use bevy::window::WindowResolution;
 
+mod animation;
 mod camera;
 mod constants;
-mod player;
+mod enemy;
+mod gamestate;
 mod map;
-mod animation;
+mod menu;
+mod player;
 mod texture;
 mod ui;
-mod enemy;
 
-use texture::{load_textures, setup_background};
-use map::load_map;
+use animation::{execute_animations, update_player_animation};
 use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
-use player::{spawn_player, player_movement};
-use animation::{execute_animations, update_player_animation};
-use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
 use enemy::update_enemies;
+use gamestate::GameState;
+use map::load_map;
+use menu::{cleanup_menu, menu_action, setup_menu};
+use player::{player_movement, spawn_player};
+use texture::{load_textures, setup_background};
+use ui::{detect_height_change, setup_ui, update_height_ui, HeightChanged};
 
 fn main() {
     App::new()
@@ -31,20 +35,33 @@ fn main() {
             }),
             ..default()
         }))
+        .insert_resource(ClearColor(Color::BLACK))
         .add_plugins(PhysicsPlugins::default())
         .add_plugins(PhysicsDebugPlugin::default())
         .insert_resource(Gravity(Vec2::NEG_Y * 900.0))
+        .init_state::<GameState>()
         .add_message::<HeightChanged>()
-        .add_systems(Startup, (load_textures, setup_background, load_map, setup_camera, spawn_player, setup_ui).chain())
+        .add_systems(Startup, setup_camera)
+        .add_systems(OnEnter(GameState::Menu), setup_menu)
+        .add_systems(Update, menu_action.run_if(in_state(GameState::Menu)))
+        .add_systems(OnExit(GameState::Menu), cleanup_menu)
+        .add_systems(
+            OnEnter(GameState::InGame),
+            (load_textures, setup_background, load_map, spawn_player, setup_ui).chain(),
+        )
         .add_systems(
             Update,
-            (player_movement,
-             update_player_animation,
-             execute_animations,
-             detect_height_change,
-             update_height_ui,
-             update_enemies,
-             camera_follow_player).chain(),
+            (
+                player_movement,
+                update_player_animation,
+                execute_animations,
+                detect_height_change,
+                update_height_ui,
+                update_enemies,
+                camera_follow_player,
+            )
+                .chain()
+                .run_if(in_state(GameState::InGame)),
         )
         .run();
 }

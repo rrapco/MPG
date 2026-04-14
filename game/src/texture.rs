@@ -12,12 +12,12 @@ pub fn setup_background(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
 ) {
-    let background = asset_server.load("background/obrazok.png");
+    let background = asset_server.load("background/roman_hra.png");
 
     commands.spawn((
         Sprite::from_image(background),
         Transform {
-            translation: Vec3::new(0.0, 0.0, -10.0),
+            translation: Vec3::new(0.0, 1000.0, -10.0),
             scale: Vec3::new(1.0, 1.0, 1.0),
             ..default()
         },

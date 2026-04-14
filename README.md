@@ -5,12 +5,13 @@ TODO:
 - Text file nacitanie mapy, riesenie errorov +
 - Avian 2D physics +
 - UI pisanie vysky +
-- Game Menu -
+- Game Menu +
 - Player Sprite + (ale nesedi vyska) -
-- Background rovnaky/podobny z jump king + od jexelka<3
+- Background rovnaky/podobny z jump king + od jexelka<3 +
 - sprite pre platformu -
 - Types of enemies = (standing, moving, shooting) + 
-- enemies touch kills you for some reason
+- enemies touch kills you for some reason -
+- add coin to get at the top of the level to progress to another level
 
 - dalsie mapy/levely
 - dalsie pozadia podla levelu
