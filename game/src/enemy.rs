@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use avian2d::prelude::*;
 use crate::constants::*;
+use crate::gamestate::InGameEntity;
 
 pub const ENEMY_WIDTH: f32 = 20.0;
 pub const ENEMY_HEIGHT: f32 = 30.0;
@@ -38,6 +39,7 @@ pub fn spawn_enemy(commands: &mut Commands, x: f32, y: f32, enemy_type: EnemyTyp
         Sprite::from_color(color, Vec2::new(ENEMY_WIDTH, ENEMY_HEIGHT)),
         Transform::from_xyz(x, y + ENEMY_HEIGHT / 2.0, 1.0),
         Enemy,
+        InGameEntity,
         RigidBody::Dynamic,
         Collider::rectangle(ENEMY_WIDTH, ENEMY_HEIGHT),
         LinearVelocity::ZERO,

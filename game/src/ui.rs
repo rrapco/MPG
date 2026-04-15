@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use crate::player::Player;
+use crate::gamestate::InGameEntity;
 
 #[derive(Message, Clone)]
 pub struct HeightChanged(pub f32);
@@ -22,6 +23,7 @@ pub fn setup_ui(mut commands: Commands) {
             ..default()
         },
         HeightText,
+        InGameEntity,
     ));
 }
 

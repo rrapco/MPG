@@ -6,3 +6,6 @@ pub enum GameState {
     Menu,
     InGame,
 }
+
+#[derive(Component)]
+pub struct InGameEntity;

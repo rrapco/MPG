@@ -2,9 +2,10 @@ use bevy::prelude::*;
 use avian2d::prelude::*;
 
 use crate::constants::{JUMP_FORCE, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_WIDTH};
-use crate::map::PlayerSpawnPoint;
+use crate::map::loader::PlayerSpawnPoint;
 use crate::animation::{AnimationConfig, PlayerAnimation};
 use crate::texture::GameTextures;
+use crate::gamestate::InGameEntity;
 
 #[derive(Component)]
 pub struct Player;
@@ -25,6 +26,7 @@ pub fn spawn_player(
         },
         Transform::from_xyz(spawn_point.0.x, spawn_point.0.y, 1.0),
         Player,
+        InGameEntity,
         RigidBody::Dynamic,
         Collider::rectangle(PLAYER_WIDTH, PLAYER_HEIGHT),
         LinearVelocity::ZERO,
@@ -76,5 +78,17 @@ pub fn player_movement(
         transform.translation.z = 1.0;
         velocity.x = 0.0;
         velocity.y = 0.0;
+    }
+}
+
+pub fn debug_player_position(
+    query: Query<&Transform, With<Player>>,
+) {
+    if let Ok(transform) = query.single() {
+        println!(
+            "Player position: x = {:.2}, y = {:.2}",
+            transform.translation.x,
+            transform.translation.y
+        );
     }
 }

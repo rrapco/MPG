@@ -18,11 +18,11 @@ use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
 use enemy::update_enemies;
 use gamestate::GameState;
-use map::load_map;
+use map::{load_map, check_goal_collision, victory_countdown, victory_input, cleanup_ingame};
 use menu::{cleanup_menu, menu_action, setup_menu};
-use player::{player_movement, spawn_player};
+use player::{player_movement, spawn_player, debug_player_position};
 use texture::{load_textures, setup_background};
-use ui::{detect_height_change, setup_ui, update_height_ui, HeightChanged};
+use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
 
 fn main() {
     App::new()
@@ -47,21 +47,32 @@ fn main() {
         .add_systems(OnExit(GameState::Menu), cleanup_menu)
         .add_systems(
             OnEnter(GameState::InGame),
-            (load_textures, setup_background, load_map, spawn_player, setup_ui).chain(),
+            (
+                load_textures,
+                setup_background,
+                load_map,
+                spawn_player,
+                setup_ui,
+            ).chain(),
         )
         .add_systems(
             Update,
             (
                 player_movement,
+                //debug_player_position,
                 update_player_animation,
                 execute_animations,
                 detect_height_change,
                 update_height_ui,
                 update_enemies,
+                check_goal_collision,
+                victory_input,
+                victory_countdown,
                 camera_follow_player,
             )
                 .chain()
                 .run_if(in_state(GameState::InGame)),
         )
+        .add_systems(OnExit(GameState::InGame), cleanup_ingame)
         .run();
 }

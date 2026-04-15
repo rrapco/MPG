@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use crate::gamestate::InGameEntity;
 
 #[derive(Resource)]
 pub struct GameTextures {
@@ -21,6 +22,7 @@ pub fn setup_background(
             scale: Vec3::new(1.0, 1.0, 1.0),
             ..default()
         },
+        InGameEntity,
     ));
 }
 
