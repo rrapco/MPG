@@ -12,18 +12,27 @@ mod menu;
 mod player;
 mod texture;
 mod ui;
+mod stopgame;
 
 use animation::{execute_animations, update_player_animation};
 use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
-use enemy::update_enemies;
+use enemy::{update_enemies, check_player_enemy_collision, Dead, death_input, death_countdown};
 use gamestate::GameState;
 use map::{load_map, check_goal_collision, victory_countdown, victory_input, cleanup_ingame};
+use map::goal::VictoryTimer;
 use menu::{cleanup_menu, menu_action, setup_menu};
 use player::{player_movement, spawn_player, debug_player_position};
 use texture::{load_textures, setup_background};
 use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
-use enemy::check_player_enemy_collision;
+use stopgame::freeze_entities;
+
+fn can_run_gameplay(
+    victory_timer: Option<Res<VictoryTimer>>,
+    dead: Option<Res<Dead>>,
+) -> bool {
+    victory_timer.is_none() && dead.is_none()
+}
 
 fn main() {
     App::new()
@@ -68,11 +77,21 @@ fn main() {
                 update_enemies,
                 check_player_enemy_collision,
                 check_goal_collision,
-                victory_input,
-                victory_countdown,
                 camera_follow_player,
             )
                 .chain()
+                .run_if(in_state(GameState::InGame))
+                .run_if(can_run_gameplay),
+        )
+        .add_systems(
+            Update,
+            (
+                victory_input,
+                victory_countdown,
+                death_input,
+                death_countdown,
+                freeze_entities,
+            )
                 .run_if(in_state(GameState::InGame)),
         )
         .add_systems(OnExit(GameState::InGame), cleanup_ingame)

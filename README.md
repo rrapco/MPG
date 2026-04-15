@@ -8,9 +8,9 @@ TODO:
 - Game Menu +
 - Player Sprite + (ale nesedi vyska) -
 - Background + od jexelka<3 +
-- sprite pre platformu -
+- sprite pre platformu +
 - Types of enemies = (standing, moving, shooting) + 
-- enemies touch kills you for some reason -
+- enemies touch kills you for some reason +
 - add coin to get at the top of the level to progress to another level +
 
 - dalsie mapy/levely
