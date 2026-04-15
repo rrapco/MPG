@@ -23,6 +23,7 @@ use menu::{cleanup_menu, menu_action, setup_menu};
 use player::{player_movement, spawn_player, debug_player_position};
 use texture::{load_textures, setup_background};
 use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
+use enemy::check_player_enemy_collision;
 
 fn main() {
     App::new()
@@ -65,6 +66,7 @@ fn main() {
                 detect_height_change,
                 update_height_ui,
                 update_enemies,
+                check_player_enemy_collision,
                 check_goal_collision,
                 victory_input,
                 victory_countdown,

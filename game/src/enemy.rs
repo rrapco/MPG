@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use avian2d::prelude::*;
 use crate::constants::*;
 use crate::gamestate::InGameEntity;
+use crate::player::Player;
 
 pub const ENEMY_WIDTH: f32 = 20.0;
 pub const ENEMY_HEIGHT: f32 = 30.0;
@@ -105,6 +106,29 @@ pub fn update_enemies(
                     }
                 }
             }
+        }
+    }
+}
+
+pub fn check_player_enemy_collision(
+    player_query: Query<&Transform, With<Player>>,
+    enemy_query: Query<&Transform, With<Enemy>>,
+) {
+    let Ok(player_transform) = player_query.single() else {
+        return;
+    };
+
+    let player_pos = player_transform.translation.truncate();
+
+    for enemy_transform in &enemy_query {
+        let enemy_pos = enemy_transform.translation.truncate();
+
+        let overlap_x = (player_pos.x - enemy_pos.x).abs() < (PLAYER_WIDTH / 2.0 + ENEMY_WIDTH / 2.0);
+        let overlap_y = (player_pos.y - enemy_pos.y).abs() < (PLAYER_HEIGHT / 2.0 + ENEMY_HEIGHT / 2.0);
+
+        if overlap_x && overlap_y {
+            println!("You died");
+            break;
         }
     }
 }

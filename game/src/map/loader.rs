@@ -5,11 +5,15 @@ use crate::constants::*;
 use crate::enemy::{spawn_enemy, EnemyType};
 use crate::map::goal::spawn_goal;
 use crate::map::tiles::{spawn_slope, spawn_tile, ROW_GAP};
+use crate::texture::GameTextures;
 
 #[derive(Resource)]
 pub struct PlayerSpawnPoint(pub Vec2);
 
-pub fn load_map(mut commands: Commands) {
+pub fn load_map(
+    mut commands: Commands,
+    textures: Res<GameTextures>,
+) {
     let content = match fs::read_to_string("assets/maps/level1.txt") {
         Ok(c) => c,
         Err(e) => {
@@ -42,11 +46,14 @@ pub fn load_map(mut commands: Commands) {
                     let count = col - start_col;
                     let width = count as f32 * TILE_SIZE_X;
                     let cx = start_col as f32 * TILE_SIZE_X + width / 2.0;
+
                     spawn_tile(
                         &mut commands,
-                        cx, y,
-                        width, TILE_SIZE_Y,
-                        Color::srgb(0.2, 0.8, 0.3),
+                        &textures,
+                        cx,
+                        y,
+                        width,
+                        TILE_SIZE_Y,
                     );
                     continue;
                 }

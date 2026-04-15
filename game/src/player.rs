@@ -58,15 +58,24 @@ pub fn player_movement(
 
     let filter = SpatialQueryFilter::default().with_excluded_entities([player_entity]);
 
-    let on_ground = spatial_query
-        .cast_ray(
-            transform.translation.truncate(),
-            Dir2::NEG_Y,
-            PLAYER_HEIGHT / 2.0 + 4.0,
-            true,
-            &filter,
-        )
-        .is_some();
+    let ray_distance = PLAYER_HEIGHT / 2.0 + 4.0;
+
+    let half_width = PLAYER_WIDTH / 2.0;
+
+    let center = transform.translation.truncate();
+    let left = center + Vec2::new(-half_width, 0.0);
+    let right = center + Vec2::new(half_width, 0.0);
+
+    let on_ground =
+        spatial_query
+            .cast_ray(center, Dir2::NEG_Y, ray_distance, true, &filter)
+            .is_some()
+            || spatial_query
+            .cast_ray(left, Dir2::NEG_Y, ray_distance, true, &filter)
+            .is_some()
+            || spatial_query
+            .cast_ray(right, Dir2::NEG_Y, ray_distance, true, &filter)
+            .is_some();
 
     if keyboard_input.just_pressed(KeyCode::Space) && on_ground {
         velocity.y = JUMP_FORCE;

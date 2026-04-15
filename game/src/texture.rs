@@ -7,6 +7,7 @@ pub struct GameTextures {
     pub player_run: Handle<Image>,
     pub player_idle_layout: Handle<TextureAtlasLayout>,
     pub player_run_layout: Handle<TextureAtlasLayout>,
+    pub platform: Handle<Image>,
 }
 
 pub fn setup_background(
@@ -43,5 +44,6 @@ pub fn load_textures(
         player_run: asset_server.load("sprites/player/Mushroom-Run.png"),
         player_idle_layout,
         player_run_layout,
+        platform: asset_server.load("sprites/tiles/platform.png"),
     });
 }

@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use avian2d::prelude::*;
 use crate::constants::*;
 use crate::gamestate::InGameEntity;
+use crate::texture::GameTextures;
 
 pub const ROW_GAP: f32 = 50.0;
 
@@ -10,35 +11,20 @@ pub struct Slope;
 
 pub fn spawn_tile(
     commands: &mut Commands,
+    textures: &Res<GameTextures>,
     x: f32, y: f32,
     width: f32, height: f32,
-    color: Color,
 ) {
     commands.spawn((
-        Sprite::from_color(color, Vec2::new(width, height)),
+        Sprite {
+            image: textures.platform.clone(),
+            custom_size: Some(Vec2::new(width, height)),
+            ..default()
+        },
         Transform::from_xyz(x, y, 0.0),
+        InGameEntity,
         RigidBody::Static,
         Collider::rectangle(width, height),
-    ));
-}
-
-pub fn spawn_tile1(
-    commands: &mut Commands,
-    x: f32, y: f32,
-    width: f32, height: f32,
-    color: Color,
-) {
-    let half_w = width / 2.0;
-    let half_h = height / 2.0;
-
-    commands.spawn((
-        Sprite::from_color(color, Vec2::new(width, height)),
-        Transform::from_xyz(x, y, 0.0),
-        RigidBody::Static,
-        Collider::segment(
-            Vec2::new(-half_w, half_h),
-            Vec2::new(half_w, half_h)
-        ),
     ));
 }
 
