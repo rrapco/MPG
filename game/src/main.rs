@@ -47,7 +47,7 @@ fn main() {
         }))
         .insert_resource(ClearColor(Color::BLACK))
         .add_plugins(PhysicsPlugins::default())
-        .add_plugins(PhysicsDebugPlugin::default())
+        //.add_plugins(PhysicsDebugPlugin::default())
         .insert_resource(Gravity(Vec2::NEG_Y * 900.0))
         .init_state::<GameState>()
         .add_message::<HeightChanged>()

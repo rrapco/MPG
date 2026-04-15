@@ -6,7 +6,7 @@ TODO:
 - Avian 2D physics +
 - UI pisanie vysky +
 - Game Menu +
-- Player Sprite + (ale nesedi vyska) -
+- Player Sprite + (ale nesedi vyska) +
 - Background + od jexelka<3 +
 - sprite pre platformu +
 - Types of enemies = (standing, moving, shooting) + 
@@ -15,3 +15,4 @@ TODO:
 
 - dalsie mapy/levely
 - dalsie pozadia podla levelu
+- fix tiles / slope aby padala postavicka

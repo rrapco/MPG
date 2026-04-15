@@ -10,32 +10,43 @@ use crate::gamestate::InGameEntity;
 #[derive(Component)]
 pub struct Player;
 
+#[derive(Component)]
+pub struct PlayerSprite;
+
 pub fn spawn_player(
     mut commands: Commands,
     spawn_point: Res<PlayerSpawnPoint>,
     textures: Res<GameTextures>,
 ) {
-    commands.spawn((
-        Sprite {
-            image: textures.player_idle.clone(),
-            texture_atlas: Some(TextureAtlas {
-                layout: textures.player_idle_layout.clone(),
-                index: 0,
-            }),
-            ..default()
-        },
-        Transform::from_xyz(spawn_point.0.x, spawn_point.0.y, 1.0),
-        Player,
-        InGameEntity,
-        RigidBody::Dynamic,
-        Collider::rectangle(PLAYER_WIDTH, PLAYER_HEIGHT),
-        LinearVelocity::ZERO,
-        LockedAxes::ROTATION_LOCKED,
-        Friction::ZERO,
-        Restitution::ZERO,
-        PlayerAnimation::Idle,
-        AnimationConfig::new(0, 6, 8),
-    ));
+    commands
+        .spawn((
+            Transform::from_xyz(spawn_point.0.x, spawn_point.0.y, 1.0),
+            Visibility::Visible,
+            Player,
+            InGameEntity,
+            RigidBody::Dynamic,
+            Collider::rectangle(PLAYER_WIDTH, PLAYER_HEIGHT),
+            LinearVelocity::ZERO,
+            LockedAxes::ROTATION_LOCKED,
+            Friction::ZERO,
+            Restitution::ZERO,
+        ))
+        .with_children(|parent| {
+            parent.spawn((
+                Sprite {
+                    image: textures.player_idle.clone(),
+                    texture_atlas: Some(TextureAtlas {
+                        layout: textures.player_idle_layout.clone(),
+                        index: 0,
+                    }),
+                    ..default()
+                },
+                Transform::from_xyz(0.0, 15.0, 0.0),
+                PlayerSprite,
+                PlayerAnimation::Idle,
+                AnimationConfig::new(0, 6, 8),
+            ));
+        });
 }
 
 pub fn player_movement(

@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use std::time::Duration;
 use avian2d::prelude::LinearVelocity;
-use crate::player::Player;
+use crate::player::{Player, PlayerSprite};
 use crate::texture::GameTextures;
 
 // https://bevy.org/examples/2d-rendering/sprite-animation/
@@ -59,13 +59,18 @@ pub fn execute_animations(
 }
 
 pub fn update_player_animation(
-    mut query: Query<
-    (&LinearVelocity, &mut PlayerAnimation, &mut Sprite, &mut AnimationConfig),
-    With<Player>,
+    player_query: Query<&LinearVelocity, With<Player>>,
+    mut sprite_query: Query<
+        (&mut PlayerAnimation, &mut Sprite, &mut AnimationConfig),
+        With<PlayerSprite>,
     >,
     textures: Res<GameTextures>,
 ) {
-    let Ok((velocity, mut current_anim, mut sprite, mut config)) = query.single_mut() else {
+    let Ok(velocity) = player_query.single() else {
+        return;
+    };
+
+    let Ok((mut current_anim, mut sprite, mut config)) = sprite_query.single_mut() else {
         return;
     };
 
