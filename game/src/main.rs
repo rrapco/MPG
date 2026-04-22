@@ -14,6 +14,7 @@ mod texture;
 mod ui;
 mod stopgame;
 mod death;
+mod game;
 
 use animation::{execute_animations, update_player_animation};
 use camera::{camera_follow_player, setup_camera};
@@ -29,13 +30,9 @@ use texture::{load_textures, setup_background};
 use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
 use stopgame::freeze_entities;
 use map::loader::{CurrentLevel, enter_ingame};
+use game::can_run_gameplay;
 
-fn can_run_gameplay(
-    victory_timer: Option<Res<VictoryTimer>>,
-    dead: Option<Res<Dead>>,
-) -> bool {
-    victory_timer.is_none() && dead.is_none()
-}
+
 
 fn main() {
     App::new()
