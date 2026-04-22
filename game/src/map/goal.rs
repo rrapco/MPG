@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use crate::constants::{PLAYER_HEIGHT, PLAYER_WIDTH, TILE_SIZE_X, TILE_SIZE_Y};
 use crate::gamestate::{GameState, InGameEntity};
 use crate::player::Player;
+use crate::map::loader::CurrentLevel;
 
 #[derive(Component)]
 pub struct Goal;
@@ -48,7 +49,7 @@ fn spawn_victory_ui(commands: &mut Commands) {
             ));
 
             parent.spawn((
-                Text::new("Press space to return to menu"),
+                Text::new("Press space to continue"),
                 TextFont {
                     font_size: 28.0,
                     ..default()
@@ -91,6 +92,7 @@ pub fn check_goal_collision(
 
 pub fn victory_input(
     keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut current_level: ResMut<CurrentLevel>,
     mut next_state: ResMut<NextState<GameState>>,
     victory_timer: Option<Res<VictoryTimer>>,
 ) {
@@ -99,13 +101,20 @@ pub fn victory_input(
     }
 
     if keyboard_input.just_pressed(KeyCode::Space) {
-        next_state.set(GameState::Menu);
+        if current_level.current < current_level.max {
+            current_level.current += 1;
+            next_state.set(GameState::LoadingLevel);
+        } else {
+            current_level.current = 1;
+            next_state.set(GameState::Menu);
+        }
     }
 }
 
 pub fn victory_countdown(
     time: Res<Time>,
     victory_timer: Option<ResMut<VictoryTimer>>,
+    mut current_level: ResMut<CurrentLevel>,
     mut next_state: ResMut<NextState<GameState>>,
 ) {
     let Some(mut victory_timer) = victory_timer else {
@@ -115,6 +124,12 @@ pub fn victory_countdown(
     victory_timer.0.tick(time.delta());
 
     if victory_timer.0.just_finished() {
-        next_state.set(GameState::Menu);
+        if current_level.current < current_level.max {
+            current_level.current += 1;
+            next_state.set(GameState::LoadingLevel);
+        } else {
+            current_level.current = 1;
+            next_state.set(GameState::Menu);
+        }
     }
 }

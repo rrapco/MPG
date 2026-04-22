@@ -6,18 +6,32 @@ use crate::enemy::{spawn_enemy, EnemyType};
 use crate::map::goal::spawn_goal;
 use crate::map::tiles::{spawn_slope, spawn_tile, ROW_GAP};
 use crate::texture::GameTextures;
+use crate::gamestate::GameState;
 
 #[derive(Resource)]
 pub struct PlayerSpawnPoint(pub Vec2);
 
+#[derive(Resource)]
+pub struct CurrentLevel {
+    pub current: usize,
+    pub max: usize,
+}
+
+pub fn enter_ingame(mut next_state: ResMut<NextState<GameState>>) {
+    next_state.set(GameState::InGame);
+}
+
 pub fn load_map(
     mut commands: Commands,
     textures: Res<GameTextures>,
+    current_level: Res<CurrentLevel>,
 ) {
-    let content = match fs::read_to_string("assets/maps/level1.txt") {
+    let path = format!("assets/maps/level{}.txt", current_level.current);
+
+    let content = match fs::read_to_string(&path) {
         Ok(c) => c,
         Err(e) => {
-            eprintln!("Chyba pri nacitani mapy: {}", e);
+            eprintln!("Chyba pri nacitani mapy {}: {}", path, e);
             return;
         }
     };

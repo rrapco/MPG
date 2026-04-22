@@ -100,7 +100,7 @@ pub fn menu_action(
 
                 match action {
                     MenuButtonAction::Play => {
-                        next_state.set(GameState::InGame);
+                        next_state.set(GameState::LoadingLevel);
                     }
                     MenuButtonAction::Quit => {
                         exit.write(AppExit::Success);

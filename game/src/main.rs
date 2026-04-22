@@ -26,6 +26,7 @@ use player::{player_movement, spawn_player, debug_player_position};
 use texture::{load_textures, setup_background};
 use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
 use stopgame::freeze_entities;
+use map::loader::{CurrentLevel, enter_ingame};
 
 fn can_run_gameplay(
     victory_timer: Option<Res<VictoryTimer>>,
@@ -48,6 +49,7 @@ fn main() {
         .insert_resource(ClearColor(Color::BLACK))
         .add_plugins(PhysicsPlugins::default())
         //.add_plugins(PhysicsDebugPlugin::default())
+        .insert_resource(CurrentLevel { current: 1, max: 2 })
         .insert_resource(Gravity(Vec2::NEG_Y * 900.0))
         .init_state::<GameState>()
         .add_message::<HeightChanged>()
@@ -56,13 +58,14 @@ fn main() {
         .add_systems(Update, menu_action.run_if(in_state(GameState::Menu)))
         .add_systems(OnExit(GameState::Menu), cleanup_menu)
         .add_systems(
-            OnEnter(GameState::InGame),
+            OnEnter(GameState::LoadingLevel),
             (
                 load_textures,
                 setup_background,
                 load_map,
                 spawn_player,
                 setup_ui,
+                enter_ingame,
             ).chain(),
         )
         .add_systems(
