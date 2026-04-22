@@ -32,8 +32,6 @@ use stopgame::freeze_entities;
 use map::loader::{CurrentLevel, enter_ingame};
 use game::can_run_gameplay;
 
-
-
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(WindowPlugin {
@@ -73,7 +71,6 @@ fn main() {
                 player_movement,
                 //debug_player_position,
                 update_player_animation,
-                execute_animations,
                 detect_height_change,
                 update_height_ui,
                 update_enemies,
@@ -88,6 +85,7 @@ fn main() {
         .add_systems(
             Update,
             (
+                execute_animations,
                 victory_input,
                 victory_countdown,
                 death_input,

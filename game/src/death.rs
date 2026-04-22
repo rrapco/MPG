@@ -91,7 +91,7 @@ pub fn death_input(
     }
 
     if keyboard_input.just_pressed(KeyCode::Space) {
-        next_state.set(GameState::LoadingLevel);
+        next_state.set(GameState::Menu);
     }
 }
 
@@ -107,6 +107,6 @@ pub fn death_countdown(
     dead.0.tick(time.delta());
 
     if dead.0.just_finished() {
-        next_state.set(GameState::LoadingLevel);
+        next_state.set(GameState::Menu);
     }
 }
