@@ -141,7 +141,7 @@ fn spawn_death_ui(commands: &mut Commands) {
             ));
 
             parent.spawn((
-                Text::new("Press SPACE to return to menu"),
+                Text::new("Press SPACE to restart"),
                 TextFont {
                     font_size: 28.0,
                     ..default()
