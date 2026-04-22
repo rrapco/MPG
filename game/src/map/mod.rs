@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::enemy::Dead;
+use crate::death::Dead;
 use crate::gamestate::InGameEntity;
 use crate::map::goal::VictoryTimer;
 use crate::map::loader::PlayerSpawnPoint;

@@ -3,7 +3,7 @@ use avian2d::prelude::*;
 use crate::enemy::Enemy;
 use crate::player::Player;
 use crate::map::goal::VictoryTimer;
-use crate::enemy::Dead;
+use crate::death::Dead;
 
 pub fn freeze_entities(
     mut query: Query<&mut LinearVelocity, Or<(With<Player>, With<Enemy>)>>,
