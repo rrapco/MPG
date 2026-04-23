@@ -18,6 +18,19 @@ pub fn setup_menu(
 ) {
     let font = asset_server.load("fonts/NotoSans-Regular.ttf");
 
+    let background = asset_server.load("background/main_menu.png");
+
+    commands.spawn((
+        ImageNode::new(background),
+        Node {
+            width: Val::Percent(100.0),
+            height: Val::Percent(100.0),
+            position_type: PositionType::Absolute,
+            ..default()
+        },
+        MainMenuUI,
+    ));
+
     commands
         .spawn((
             Node {
@@ -27,7 +40,7 @@ pub fn setup_menu(
                 align_items: AlignItems::Center,
                 ..default()
             },
-            BackgroundColor(Color::srgb(0.08, 0.08, 0.08)),
+            //BackgroundColor(Color::srgb(0.08, 0.08, 0.08)),
             MainMenuUI,
         ))
         .with_children(|parent| {

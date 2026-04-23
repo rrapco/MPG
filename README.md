@@ -16,3 +16,9 @@ TODO:
 - dalsie mapy/levely
 - dalsie pozadia podla levelu
 - fix tiles / slope aby padala postavicka
+
+- player z boku sa vie zachytit
+- enemy sprite
+- death animation?
+- level change?
+- Timer na level?
