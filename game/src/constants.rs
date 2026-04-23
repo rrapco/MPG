@@ -6,3 +6,4 @@ pub const PLAYER_SPEED: f32 = 400.0;
 pub const JUMP_FORCE: f32 = 600.0;
 pub const TILE_SIZE_X: f32 = 20.0;
 pub const TILE_SIZE_Y: f32 = 20.0;
+pub const ENEMY_SPEED: f32 = 60.0;

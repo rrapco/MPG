@@ -20,10 +20,9 @@ use animation::{execute_animations, update_player_animation};
 use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
 use enemy::update_enemies;
-use death::{check_player_enemy_collision, DeathTimer, death_input, death_countdown};
+use death::{check_player_enemy_collision, death_input, death_countdown, check_death};
 use gamestate::GameState;
 use map::{load_map, check_goal_collision, victory_countdown, victory_input, cleanup_ingame};
-use map::goal::VictoryTimer;
 use menu::{cleanup_menu, menu_action, setup_menu};
 use player::{player_movement, spawn_player, debug_player_position};
 use texture::{load_textures, setup_background};
@@ -77,6 +76,7 @@ fn main() {
                 check_player_enemy_collision,
                 check_goal_collision,
                 camera_follow_player,
+                check_death,
             )
                 .chain()
                 .run_if(in_state(GameState::InGame))

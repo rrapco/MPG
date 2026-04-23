@@ -84,9 +84,8 @@ pub fn update_enemies(
             }
             EnemyType::Walking => {
                 if let Some(mut state) = walking {
-                    let speed = 60.0;
-                    velocity.x = state.direction * speed;
-                    state.distance_moved += speed * time.delta_secs();
+                    velocity.x = state.direction * ENEMY_SPEED;
+                    state.distance_moved += ENEMY_SPEED * time.delta_secs();
 
                     if state.distance_moved >= state.max_distance {
                         state.direction *= -1.0;

@@ -67,10 +67,12 @@ pub fn check_player_enemy_collision(
     for enemy_transform in &enemy_query {
         let enemy_pos = enemy_transform.translation.truncate();
 
+        let padding = 1.0;
+
         let overlap_x =
-            (player_pos.x - enemy_pos.x).abs() < (PLAYER_WIDTH / 2.0 + ENEMY_WIDTH / 2.0);
+            (player_pos.x - enemy_pos.x).abs() <= (PLAYER_WIDTH / 2.0 + ENEMY_WIDTH / 2.0 + padding);
         let overlap_y =
-            (player_pos.y - enemy_pos.y).abs() < (PLAYER_HEIGHT / 2.0 + ENEMY_HEIGHT / 2.0);
+            (player_pos.y - enemy_pos.y).abs() <= (PLAYER_HEIGHT / 2.0 + ENEMY_HEIGHT / 2.0 + padding);
 
         if overlap_x && overlap_y {
             println!("You died");
@@ -91,7 +93,7 @@ pub fn death_input(
     }
 
     if keyboard_input.just_pressed(KeyCode::Space) {
-        next_state.set(GameState::Menu);
+        next_state.set(GameState::LoadingLevel);
     }
 }
 
@@ -107,6 +109,21 @@ pub fn death_countdown(
     dead.0.tick(time.delta());
 
     if dead.0.just_finished() {
-        next_state.set(GameState::Menu);
+        next_state.set(GameState::LoadingLevel);
+    }
+}
+
+pub fn check_death(
+    mut commands: Commands,
+    player: Single<&Transform, With<Player>>,
+    dead: Option<Res<DeathTimer>>,
+) {
+    if player.translation.y < -400.0 {
+        if dead.is_none() {
+            println!("You died");
+            spawn_death_ui(&mut commands);
+            commands.insert_resource(DeathTimer(Timer::from_seconds(60.0, TimerMode::Once)));
+        }
+        return;
     }
 }
