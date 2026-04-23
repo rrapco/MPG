@@ -20,7 +20,7 @@ use animation::{execute_animations, update_player_animation};
 use camera::{camera_follow_player, setup_camera};
 use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
 use enemy::update_enemies;
-use death::{check_player_enemy_collision, Dead, death_input, death_countdown};
+use death::{check_player_enemy_collision, DeathTimer, death_input, death_countdown};
 use gamestate::GameState;
 use map::{load_map, check_goal_collision, victory_countdown, victory_input, cleanup_ingame};
 use map::goal::VictoryTimer;

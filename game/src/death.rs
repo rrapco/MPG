@@ -9,7 +9,7 @@ use crate::player::Player;
 pub struct DeathText;
 
 #[derive(Resource)]
-pub struct Dead(pub Timer);
+pub struct DeathTimer(pub Timer);
 
 fn spawn_death_ui(commands: &mut Commands) {
     commands.spawn((
@@ -52,7 +52,7 @@ pub fn check_player_enemy_collision(
     mut commands: Commands,
     player_query: Query<&Transform, With<Player>>,
     enemy_query: Query<&Transform, With<Enemy>>,
-    dead: Option<Res<Dead>>,
+    dead: Option<Res<DeathTimer>>,
 ) {
     if dead.is_some() {
         return;
@@ -75,7 +75,7 @@ pub fn check_player_enemy_collision(
         if overlap_x && overlap_y {
             println!("You died");
             spawn_death_ui(&mut commands);
-            commands.insert_resource(Dead(Timer::from_seconds(60.0, TimerMode::Once)));
+            commands.insert_resource(DeathTimer(Timer::from_seconds(60.0, TimerMode::Once)));
             break;
         }
     }
@@ -84,7 +84,7 @@ pub fn check_player_enemy_collision(
 pub fn death_input(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut next_state: ResMut<NextState<GameState>>,
-    dead: Option<Res<Dead>>,
+    dead: Option<Res<DeathTimer>>,
 ) {
     if dead.is_none() {
         return;
@@ -97,7 +97,7 @@ pub fn death_input(
 
 pub fn death_countdown(
     time: Res<Time>,
-    dead: Option<ResMut<Dead>>,
+    dead: Option<ResMut<DeathTimer>>,
     mut next_state: ResMut<NextState<GameState>>,
 ) {
     let Some(mut dead) = dead else {

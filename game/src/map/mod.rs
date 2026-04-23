@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::death::Dead;
+use crate::death::DeathTimer;
 use crate::gamestate::InGameEntity;
 use crate::map::goal::VictoryTimer;
 use crate::map::loader::PlayerSpawnPoint;
@@ -16,7 +16,7 @@ pub fn cleanup_ingame(
     mut commands: Commands,
     query: Query<Entity, With<InGameEntity>>,
     has_victory_timer: Option<Res<VictoryTimer>>,
-    has_dead: Option<Res<Dead>>,
+    has_dead: Option<Res<DeathTimer>>,
 ) {
     for entity in &query {
         commands.entity(entity).despawn();
@@ -27,7 +27,7 @@ pub fn cleanup_ingame(
     }
 
     if has_dead.is_some() {
-        commands.remove_resource::<Dead>();
+        commands.remove_resource::<DeathTimer>();
     }
 
     commands.remove_resource::<PlayerSpawnPoint>();

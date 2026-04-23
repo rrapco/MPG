@@ -59,6 +59,7 @@ pub fn player_movement(
         return;
     };
 
+    // movement
     velocity.x = 0.0;
     if keyboard_input.pressed(KeyCode::KeyA) {
         velocity.x -= PLAYER_SPEED;
@@ -77,6 +78,7 @@ pub fn player_movement(
     let left = center + Vec2::new(-half_width, 0.0);
     let right = center + Vec2::new(half_width, 0.0);
 
+    // ground check
     let on_ground =
         spatial_query
             .cast_ray(center, Dir2::NEG_Y, ray_distance, true, &filter)
@@ -88,10 +90,12 @@ pub fn player_movement(
             .cast_ray(right, Dir2::NEG_Y, ray_distance, true, &filter)
             .is_some();
 
+    // skok
     if keyboard_input.just_pressed(KeyCode::Space) && on_ground {
         velocity.y = JUMP_FORCE;
     }
 
+    // reset, treba pridat ked spadne player pod -10 y napriklad
     if keyboard_input.pressed(KeyCode::KeyR) {
         transform.translation.x = spawn_point.0.x;
         transform.translation.y = spawn_point.0.y;
