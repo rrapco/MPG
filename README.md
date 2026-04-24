@@ -13,12 +13,9 @@ TODO:
 - enemies touch kills you for some reason +
 - add coin to get at the top of the level to progress to another level +
 
-- dalsie mapy/levely
-- dalsie pozadia podla levelu
+- dalsie mapy/levely +
 - fix tiles / slope aby padala postavicka
 
 - player z boku sa vie zachytit
-- enemy sprite
-- death animation?
 - level change?
 - Timer na level?
