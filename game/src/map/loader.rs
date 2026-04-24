@@ -83,14 +83,17 @@ pub fn load_map(
                 'c' => {
                     spawn_goal(&mut commands, x, y);
                 }
-                'e' => {
-                    spawn_enemy(&mut commands, x, y, EnemyType::Standing);
+                's' => {
+                    spawn_enemy(&mut commands, x, y, EnemyType::Standing, false);
                 }
                 'w' => {
-                    spawn_enemy(&mut commands, x, y, EnemyType::Walking);
+                    spawn_enemy(&mut commands, x, y, EnemyType::Walking, false);
+                }
+                'm' => {
+                    spawn_enemy(&mut commands, x, y, EnemyType::Walking, true);
                 }
                 'j' => {
-                    spawn_enemy(&mut commands, x, y, EnemyType::Jumping);
+                    spawn_enemy(&mut commands, x, y, EnemyType::Jumping, false);
                 }
                 _ => {}
             }

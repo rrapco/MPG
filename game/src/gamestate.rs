@@ -6,6 +6,7 @@ pub enum GameState {
     Menu,
     LevelSelect,
     LoadingLevel,
+    Leaderboard,
     InGame,
 }
 

@@ -28,7 +28,7 @@ pub struct JumpingState {
     pub jump_timer: Timer,
 }
 
-pub fn spawn_enemy(commands: &mut Commands, x: f32, y: f32, enemy_type: EnemyType) {
+pub fn spawn_enemy(commands: &mut Commands, x: f32, y: f32, enemy_type: EnemyType, start_left: bool,) {
     let color = match enemy_type {
         EnemyType::Standing => Color::srgb(1.0, 0.0, 0.0),
         EnemyType::Walking  => Color::srgb(1.0, 0.5, 0.0),
@@ -54,7 +54,7 @@ pub fn spawn_enemy(commands: &mut Commands, x: f32, y: f32, enemy_type: EnemyTyp
     match enemy_type {
         EnemyType::Walking => {
             entity.insert(WalkingState {
-                direction: 1.0,
+                direction: if start_left { -1.0 } else { 1.0 },
                 distance_moved: 0.0,
                 max_distance: TILE_SIZE_X * 4.0,
             });

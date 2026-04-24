@@ -11,6 +11,7 @@ pub struct MainMenuUI;
 pub enum MenuButtonAction {
     Play,
     LevelSelect,
+    Leaderboard,
     SelectLevel(usize),
     Back,
     Quit,
@@ -60,6 +61,7 @@ pub fn setup_menu(
 
                     spawn_button(parent, "Play", MenuButtonAction::Play);
                     spawn_button(parent, "Level Change", MenuButtonAction::LevelSelect);
+                    spawn_button(parent, "Leaderboard", MenuButtonAction::Leaderboard);
                     spawn_button(parent, "Quit", MenuButtonAction::Quit);
                 });
         });
@@ -178,6 +180,9 @@ pub fn menu_action(
                     MenuButtonAction::LevelSelect => {
                         next_state.set(GameState::LevelSelect);
                     }
+                    MenuButtonAction::Leaderboard => {
+                        next_state.set(GameState::Leaderboard);
+                    }
                     MenuButtonAction::SelectLevel(level) => {
                         current_level.current = *level;
                         next_state.set(GameState::LoadingLevel);
@@ -198,6 +203,65 @@ pub fn menu_action(
             }
         }
     }
+}
+
+pub fn setup_leaderboard(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+) {
+    let font = asset_server.load("fonts/NotoSans-Regular.ttf");
+    let background = asset_server.load("background/main_menu.png");
+
+    spawn_background(&mut commands, background);
+
+    let times_text = std::fs::read_to_string("times.txt")
+        .unwrap_or("No times yet".to_string());
+
+    commands
+        .spawn((
+            Node {
+                width: Val::Percent(100.0),
+                height: Val::Percent(100.0),
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                ..default()
+            },
+            MainMenuUI,
+        ))
+        .with_children(|parent| {
+            parent
+                .spawn(Node {
+                    width: Val::Px(420.0),
+                    flex_direction: FlexDirection::Column,
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    row_gap: Val::Px(18.0),
+                    ..default()
+                })
+                .with_children(|parent| {
+                    parent.spawn((
+                        Text::new("Leaderboard"),
+                        TextFont {
+                            font: font.clone(),
+                            font_size: 42.0,
+                            ..default()
+                        },
+                        TextColor(Color::WHITE),
+                    ));
+
+                    parent.spawn((
+                        Text::new(times_text),
+                        TextFont {
+                            font: font.clone(),
+                            font_size: 28.0,
+                            ..default()
+                        },
+                        TextColor(Color::WHITE),
+                    ));
+
+                    spawn_button(parent, "Back", MenuButtonAction::Back);
+                });
+        });
 }
 
 pub fn cleanup_menu(
