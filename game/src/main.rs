@@ -27,7 +27,7 @@ use menu::{cleanup_menu, menu_action, setup_level_select, setup_menu};
 use player::{player_movement, spawn_player, debug_player_position};
 use texture::{load_textures, setup_background};
 use ui::{setup_ui, detect_height_change, update_height_ui, update_timer_ui, HeightChanged};
-use stopgame::freeze_entities;
+use stopgame::{freeze_entities};
 use map::loader::{CurrentLevel, enter_ingame};
 use game::{can_run_gameplay, return_to_menu};
 

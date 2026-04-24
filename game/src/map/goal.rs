@@ -3,6 +3,8 @@ use crate::constants::{PLAYER_HEIGHT, PLAYER_WIDTH, TILE_SIZE_X, TILE_SIZE_Y};
 use crate::gamestate::{GameState, InGameEntity};
 use crate::player::Player;
 use crate::map::loader::CurrentLevel;
+use crate::stopgame::save_level_time;
+use crate::ui::LevelTimer;
 
 #[derive(Component)]
 pub struct Goal;
@@ -64,6 +66,8 @@ pub fn check_goal_collision(
     player_query: Query<&Transform, With<Player>>,
     goal_query: Query<(Entity, &Transform), With<Goal>>,
     victory_timer: Option<Res<VictoryTimer>>,
+    timer: Res<LevelTimer>,
+    current_level: Res<CurrentLevel>,
 ) {
     if victory_timer.is_some() {
         return;
@@ -83,6 +87,7 @@ pub fn check_goal_collision(
 
         if overlap_x && overlap_y {
             commands.entity(goal_entity).despawn();
+            save_level_time(current_level.current, timer.seconds);
             spawn_victory_ui(&mut commands);
             commands.insert_resource(VictoryTimer(Timer::from_seconds(60.0, TimerMode::Once)));
             break;
