@@ -72,11 +72,11 @@ pub fn player_movement(
 
     let ray_distance = PLAYER_HEIGHT / 2.0 + 4.0;
 
-    let half_width = PLAYER_WIDTH / 2.0;
+    let ground_check_width = PLAYER_WIDTH / 2.0 - 5.0;
 
     let center = transform.translation.truncate();
-    let left = center + Vec2::new(-half_width, 0.0);
-    let right = center + Vec2::new(half_width, 0.0);
+    let left = center + Vec2::new(-ground_check_width, 0.0);
+    let right = center + Vec2::new(ground_check_width, 0.0);
 
     // ground check
     let on_ground =
@@ -95,14 +95,18 @@ pub fn player_movement(
         velocity.y = JUMP_FORCE;
     }
 
-    // reset, treba pridat ked spadne player pod -10 y napriklad
-    if keyboard_input.pressed(KeyCode::KeyR) {
-        transform.translation.x = spawn_point.0.x;
-        transform.translation.y = spawn_point.0.y;
-        transform.translation.z = 1.0;
-        velocity.x = 0.0;
-        velocity.y = 0.0;
+    if keyboard_input.just_pressed(KeyCode::KeyW) && on_ground {
+        velocity.y = JUMP_FORCE;
     }
+
+    // reset, treba pridat ked spadne player pod -10 y napriklad
+    // if keyboard_input.pressed(KeyCode::KeyR) {
+    //     transform.translation.x = spawn_point.0.x;
+    //     transform.translation.y = spawn_point.0.y;
+    //     transform.translation.z = 1.0;
+    //     velocity.x = 0.0;
+    //     velocity.y = 0.0;
+    // }
 }
 
 pub fn debug_player_position(
