@@ -18,7 +18,7 @@ mod game;
 
 use animation::{execute_animations, update_player_animation};
 use camera::{camera_follow_player, setup_camera};
-use constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
+use constants::{WINDOW_HEIGHT, WINDOW_WIDTH, GRAVITY_PLAYER};
 use enemy::update_enemies;
 use death::{check_player_enemy_collision, death_input, death_countdown, check_death};
 use gamestate::GameState;
@@ -26,7 +26,7 @@ use map::{load_map, check_goal_collision, victory_countdown, victory_input, clea
 use menu::{cleanup_menu, menu_action, setup_level_select, setup_menu};
 use player::{player_movement, spawn_player, debug_player_position};
 use texture::{load_textures, setup_background};
-use ui::{setup_ui, detect_height_change, update_height_ui, HeightChanged};
+use ui::{setup_ui, detect_height_change, update_height_ui, update_timer_ui, HeightChanged};
 use stopgame::freeze_entities;
 use map::loader::{CurrentLevel, enter_ingame};
 use game::{can_run_gameplay, return_to_menu};
@@ -46,7 +46,7 @@ fn main() {
         .add_plugins(PhysicsPlugins::default())
         //.add_plugins(PhysicsDebugPlugin::default())
         .insert_resource(CurrentLevel { current: 1, max: 3 })
-        .insert_resource(Gravity(Vec2::NEG_Y * 900.0))
+        .insert_resource(Gravity(Vec2::NEG_Y * GRAVITY_PLAYER))
         .init_state::<GameState>()
         .add_message::<HeightChanged>()
         .add_systems(Startup, setup_camera)
@@ -78,6 +78,7 @@ fn main() {
                 update_player_animation,
                 detect_height_change,
                 update_height_ui,
+                update_timer_ui,
                 update_enemies,
                 check_player_enemy_collision,
                 check_goal_collision,

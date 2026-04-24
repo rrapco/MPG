@@ -7,3 +7,4 @@ pub const JUMP_FORCE: f32 = 600.0;
 pub const TILE_SIZE_X: f32 = 20.0;
 pub const TILE_SIZE_Y: f32 = 20.0;
 pub const ENEMY_SPEED: f32 = 60.0;
+pub const GRAVITY_PLAYER: f32 = 1050.0;

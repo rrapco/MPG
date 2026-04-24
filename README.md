@@ -17,5 +17,4 @@ TODO:
 - fix tiles / slope aby padala postavicka
 
 - player z boku sa vie zachytit
-- level change?
-- Timer na level?
+- Timer na level
