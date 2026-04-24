@@ -14,7 +14,6 @@ TODO:
 - add coin to get at the top of the level to progress to another level +
 
 - dalsie mapy/levely +
-- fix tiles / slope aby padala postavicka
 
 - player z boku sa vie zachytit
-- Timer na level
+- Timer na level +
