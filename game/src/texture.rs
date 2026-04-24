@@ -5,8 +5,12 @@ use crate::gamestate::InGameEntity;
 pub struct GameTextures {
     pub player_idle: Handle<Image>,
     pub player_run: Handle<Image>,
+    pub player_death: Handle<Image>,
+
     pub player_idle_layout: Handle<TextureAtlasLayout>,
     pub player_run_layout: Handle<TextureAtlasLayout>,
+    pub player_death_layout: Handle<TextureAtlasLayout>,
+
     pub platform: Handle<Image>,
 }
 
@@ -38,10 +42,15 @@ pub fn load_textures(
     let player_run_layout = texture_atlas_layouts.add(
         TextureAtlasLayout::from_grid(UVec2::new(80, 64), 8, 1, None, None)
     );
+    let player_death_layout = texture_atlas_layouts.add(
+        TextureAtlasLayout::from_grid(UVec2::new(64, 64), 15, 1, None, None)
+    );
 
     commands.insert_resource(GameTextures {
         player_idle: asset_server.load("sprites/player/Mushroom-Idle.png"),
         player_run: asset_server.load("sprites/player/Mushroom-Run.png"),
+        player_death: asset_server.load("sprites/player/Mushroom-Die.png"),
+        player_death_layout,
         player_idle_layout,
         player_run_layout,
         platform: asset_server.load("sprites/tiles/platform.png"),
