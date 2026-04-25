@@ -72,7 +72,7 @@ pub fn player_movement(
 
     let ray_distance = PLAYER_HEIGHT / 2.0 + 4.0;
 
-    let ground_check_width = PLAYER_WIDTH / 2.0 - 5.0;
+    let ground_check_width = PLAYER_WIDTH / 2.0 - 2.0;
 
     let center = transform.translation.truncate();
     let left = center + Vec2::new(-ground_check_width, 0.0);
